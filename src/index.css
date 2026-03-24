@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-slate-200;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+  }
+
+  button,
+  input,
+  label {
+    font: inherit;
+  }
+
+  input[type="range"] {
+    accent-color: rgb(15 23 42);
+  }
+}
