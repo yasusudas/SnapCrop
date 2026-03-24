@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SnapCrop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">Pixel-Guided Crop Tool</p>
+        <h1>SnapCrop</h1>
+        <p class="hero-copy">
+          画像内の色をクリックして、その色が各辺から最初に見つかる位置の
+          <strong>1px内側</strong> で切り抜きます。<code>jpg</code> <code>png</code>
+          <code>tif</code> に対応しています。
+        </p>
+      </header>
+
+      <main class="workspace">
+        <section class="panel controls-panel">
+          <div class="panel-header">
+            <h2>1. 画像を読み込む</h2>
+            <p>ドラッグ＆ドロップ、またはファイル選択で読み込みます。</p>
+          </div>
+
+          <label class="dropzone" for="imageInput" id="dropzone">
+            <input
+              id="imageInput"
+              type="file"
+              accept=".jpg,.jpeg,.png,.tif,.tiff,image/jpeg,image/png,image/tiff"
+            />
+            <span class="dropzone-title">画像をここへドロップ</span>
+            <span class="dropzone-subtitle">またはクリックして選択</span>
+          </label>
+
+          <div class="file-meta" id="fileMeta">ファイル未選択</div>
+
+          <div class="panel-header compact">
+            <h2>2. 色を選ぶ</h2>
+            <p>元画像をクリックしてスポイト選択します。</p>
+          </div>
+
+          <div class="color-selection">
+            <div class="swatch" id="colorSwatch"></div>
+            <div>
+              <div class="value-label">選択色</div>
+              <div class="value-main" id="colorValue">未選択</div>
+              <div class="value-sub" id="colorDetail">画像上をクリックしてください</div>
+            </div>
+          </div>
+
+          <div class="tolerance-group">
+            <label for="toleranceRange">一致許容差</label>
+            <div class="tolerance-row">
+              <input id="toleranceRange" type="range" min="0" max="64" value="0" />
+              <span id="toleranceValue">0</span>
+            </div>
+            <p class="helper-text">
+              JPG で微妙に色がずれる場合は少し上げると見つけやすくなります。
+            </p>
+          </div>
+
+          <div class="panel-header compact">
+            <h2>3. 切り抜く辺を選ぶ</h2>
+            <p>オンにした辺からだけ対象色を探索します。</p>
+          </div>
+
+          <div class="toggle-grid">
+            <label class="toggle-card">
+              <input type="checkbox" id="toggleTop" checked />
+              <span>Top</span>
+            </label>
+            <label class="toggle-card">
+              <input type="checkbox" id="toggleBottom" checked />
+              <span>Bottom</span>
+            </label>
+            <label class="toggle-card">
+              <input type="checkbox" id="toggleLeft" checked />
+              <span>Left</span>
+            </label>
+            <label class="toggle-card">
+              <input type="checkbox" id="toggleRight" checked />
+              <span>Right</span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button id="cropButton" class="primary-button" disabled>切り抜きを実行</button>
+            <button id="downloadButton" class="secondary-button" disabled>PNGで保存</button>
+          </div>
+
+          <div class="status-card" id="statusCard">
+            画像を読み込むと、ここに処理内容が表示されます。
+          </div>
+        </section>
+
+        <section class="panel preview-panel">
+          <div class="preview-block">
+            <div class="panel-header compact">
+              <h2>元画像</h2>
+              <p>クリックしてスポイト選択</p>
+            </div>
+            <div class="canvas-shell">
+              <canvas id="sourceCanvas"></canvas>
+              <div class="canvas-placeholder" id="sourcePlaceholder">
+                プレビューはここに表示されます
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-block">
+            <div class="panel-header compact">
+              <h2>切り抜き結果</h2>
+              <p id="resultMeta">まだ切り抜き結果はありません</p>
+            </div>
+            <div class="canvas-shell">
+              <canvas id="resultCanvas"></canvas>
+              <div class="canvas-placeholder" id="resultPlaceholder">
+                切り抜き後の画像がここに表示されます
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
